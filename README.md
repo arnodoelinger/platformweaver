@@ -1,5 +1,5 @@
 [![JitPack](https://jitpack.io/v/arsmotorin/ofrat.svg)](https://jitpack.io/#arsmotorin/ofrat)
-[![Latest release](https://img.shields.io/github/release/arsmotorin/OFRAT.svg)](https://github.com/arsmotorin/OFRAT/releases/latest)
+[![License](https://img.shields.io/github/license/arsmotorin/OFRAT)](https://github.com/arsmotorin/OFRAT/blob/master/LICENSE)
 [![Discord](http://img.shields.io/discord/1456716690879676501?label=Discord&style=flat&logo=discord)](https://discord.gg/uwMMZ2KWk6)
 
 <div align="center"> <img src="https://i.imgur.com/nutNr5X.png" alt="OFRAT"> </div>

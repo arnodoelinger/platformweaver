@@ -5,8 +5,8 @@
 <div align="center"> <img src="https://i.imgur.com/nutNr5X.png" alt="OFRAT"> </div>
 One file rules all targets!
 
-> [!WARNING]
-> This is an experimental project and API can be changed in the future.
+## Warning
+This is an experimental project and API can be changed in the future. You can use it, but it's not recommended.
 
 ## The situation
 
@@ -36,7 +36,7 @@ Compile for Paper? The `@FabricOnly` block is gone.
 
 ```sh
 javap -p build/libs/my-paper.jar 'com.example.Scheduler'
-# → scheduleAsync()  <- Paper version only. The Fabric one never made it to bytecode.
+# scheduleAsync() <- Paper version only. The Fabric one never made it to bytecode.
 ```
 
 And there is no runtime overhead too, and it's the same file for both platforms.

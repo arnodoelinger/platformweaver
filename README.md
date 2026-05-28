@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/github/license/arsmotorin/OFRAT)](https://github.com/arsmotorin/OFRAT/blob/master/LICENSE)
 [![Discord](http://img.shields.io/discord/1456716690879676501?label=Discord&style=flat&logo=discord)](https://discord.gg/uwMMZ2KWk6)
 
-<div align="center"> <img src="https://i.imgur.com/nutNr5X.png" alt="OFRAT"> </div>
+<div align="center"> <img src="https://i.imgur.com/xn18HzJ.png" alt="OFRAT"> </div>
 One file rules all targets!
 
 ## Warning

@@ -95,9 +95,11 @@ jobs:
           sed -n "/^# Version $VERSION$/,/^# Version /p" CHANGELOG.md \
             | sed '1d' \
             | sed '/^# Version /d' \
-            | sed 's/^- \[[x ]\]\s*//' \
-            | sed '/^$/d' \
-            | sed 's/^/- /' > release_notes.md
+            | awk '{ l[NR]=$0 } END {
+                s=1; while (s<=NR && l[s]~/^[[:space:]]*$/) s++;
+                e=NR; while (e>=s && l[e]~/^[[:space:]]*$/) e--;
+                for (i=s; i<=e; i++) print l[i]
+              }' > release_notes.md
           echo "Extracted changelog for $VERSION:"
           cat release_notes.md
 

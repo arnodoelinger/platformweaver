@@ -111,7 +111,7 @@ jobs:
           gh release create "$TAG" \
             --title "$VERSION" \
             --notes-file release_notes.md \
-            $( [[ "$VERSION" == *"-SNAPSHOT"* ]] && echo "--prerelease" ) \
+            $( [[ "$VERSION" == *"-DEV"* ]] && echo "--prerelease" ) \
             $JARS \
           || gh release upload "$TAG" $JARS --clobber
         env:

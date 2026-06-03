@@ -1,7 +1,15 @@
+# Version 1.0.1
+
+## Features
+
+- Use the same changelog style as in [Dream Displays](https://github.com/arsmotorin/dreamdisplays/blob/main/CHANGELOG.md)
+
+## Improvements
+
+- Enhance README file
+
 # Version 1.0.0
 
-- [x] Initial release
-- [x] `@FabricOnly`, `@PaperOnly`, `@NeoForgeOnly`, built-in platform annotations
-- [x] `@PlatformOnly` meta-annotation for defining custom platform annotations
-- [x] Gradle plugin (`id("io.github.arsmotorin.ofrat")`) with `ofrat { target = "..." }` DSL
-- [x] Load on JitPack
+## Features
+
+- Initial release

@@ -19,4 +19,13 @@ abstract class OfratExtension {
      * Custom values are supported via `@PlatformOnly("myplatform")`.
      */
     var target: String? = null
+
+    /**
+     * Path (relative to the project dir) to the directory holding `@Chameleon` carrier files.
+     *
+     * These files declare platform-resolved type aliases and are not compiled directly. The
+     * `OFRAT` `Gradle` plugin parses them and generates a real `typealias` per [target]. Defaults to
+     * `src/main/chameleons`. Set to `null` to disable chameleon codegen entirely.
+     */
+    var chameleonsDir: String? = "src/main/chameleons"
 }

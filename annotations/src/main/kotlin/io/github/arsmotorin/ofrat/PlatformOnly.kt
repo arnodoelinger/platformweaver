@@ -18,7 +18,7 @@ package io.github.arsmotorin.ofrat
  * ```
  *
  * After this definition, `@SpigotOnly` declarations are automatically stripped from all
- * non-`Spigot` compilations — no changes to the plugin required.
+ * non-`Spigot` compilations, no changes to the plugin required.
  *
  * @param platform lowercase platform identifier (e.g. `"fabric"`, `"paper"`, `"neoforge"`).
  *   Must match the `ofrat { target = "..." }` value in the consuming module's build script.

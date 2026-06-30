@@ -11,7 +11,8 @@ import org.gradle.api.tasks.TaskAction
 import java.io.File
 
 /**
- * Gradle task that realizes `@Chameleon` carriers into per-platform `typealias` declarations.
+ * Gradle task that realizes `@Chameleon` carriers into per-platform declarations — type aliases,
+ * extension / computed properties, and functions.
  *
  * Reads every `.kt` file under [chameleonsDir], delegates parsing and generation to
  * [ChameleonGenerator] for the configured [platform], and writes the result into [outputDir]

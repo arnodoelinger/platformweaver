@@ -23,8 +23,9 @@ abstract class PlatformWeaverExtension {
     /**
      * Path (relative to the project dir) to the directory holding `@Chameleon` carrier files.
      *
-     * These files declare platform-resolved type aliases and are not compiled directly. The
-     * `Platform Weaver` `Gradle` plugin parses them and generates a real `typealias` per [target]. Defaults to
+     * These files declare platform-resolved declarations — type aliases, extension / computed
+     * properties, and functions — and are not compiled directly. The `Platform Weaver` `Gradle`
+     * plugin parses them and generates the matching declaration per [target]. Defaults to
      * `src/main/chameleons`. Set to `null` to disable chameleon codegen entirely.
      */
     var chameleonsDir: String? = "src/main/chameleons"

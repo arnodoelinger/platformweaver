@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.config.CompilerConfigurationKey
 internal val PLATFORM_KEY = CompilerConfigurationKey.create<String>("platformweaver.platform.target")
 
 /**
- * CLI option accepted by [PlatformCommandLineProcessor].
+ * CLI option accepted by [io.github.arnodoelinger.platformweaver.compiler.PlatformCommandLineProcessor].
  *
  * Passed via `-P plugin:io.github.arnodoelinger.platformweaver:platform=<value>`.
  */

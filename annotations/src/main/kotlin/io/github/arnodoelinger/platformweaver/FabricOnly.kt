@@ -28,11 +28,11 @@ package io.github.arnodoelinger.platformweaver
  * any `Fabric`-specific types referenced inside a `@FabricOnly` block must still be resolvable
  * at compile time. Add `Fabric API` as `compileOnly` alongside `Paper API` in shared modules.
  *
- * @see PlatformOnly
- * @see PaperOnly
- * @see NeoForgeOnly
+ * @see io.github.arnodoelinger.platformweaver.PlatformOnly
+ * @see io.github.arnodoelinger.platformweaver.PaperOnly
+ * @see io.github.arnodoelinger.platformweaver.NeoForgeOnly
  */
-@PlatformOnly("fabric")
+@io.github.arnodoelinger.platformweaver.PlatformOnly("fabric")
 @Target(
     AnnotationTarget.CLASS,
     AnnotationTarget.FUNCTION,

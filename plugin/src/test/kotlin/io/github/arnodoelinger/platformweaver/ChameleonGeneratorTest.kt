@@ -78,4 +78,76 @@ class ChameleonGeneratorTest {
             "generic + nullable target must survive verbatim",
         )
     }
+
+    @Test fun `extension property carrier is emitted verbatim for the target only`() {
+        val accessors = SourceFile(
+            """
+            package com.example
+
+            @PaperOnly @Chameleon val PlatPlayer.platUuid: java.util.UUID get() = uniqueId
+            @FabricOnly @Chameleon val PlatPlayer.platUuid: java.util.UUID get() = uuid
+            """.trimIndent()
+        )
+
+        val paper = ChameleonGenerator.generate(listOf(accessors), "paper")[0].content
+        assertTrue("val PlatPlayer.platUuid: java.util.UUID get() = uniqueId" in paper)
+        assertTrue("typealias" !in paper, "a property carrier must not become a typealias")
+        assertTrue("uuid" !in paper.substringAfter("get() = "), "fabric accessor must not leak into paper")
+
+        val fabric = ChameleonGenerator.generate(listOf(accessors), "fabric")[0].content
+        assertTrue("val PlatPlayer.platUuid: java.util.UUID get() = uuid" in fabric)
+        assertTrue("uniqueId" !in fabric, "paper accessor must not leak into fabric")
+    }
+
+    @Test fun `function carrier is emitted verbatim`() {
+        val fns = SourceFile(
+            """
+            @PaperOnly @Chameleon fun PlatPlayer.platWorldName(): String = world.name
+            @FabricOnly @Chameleon fun PlatPlayer.platWorldName(): String = level().dimension().location().toString()
+            """.trimIndent()
+        )
+        assertTrue(
+            "fun PlatPlayer.platWorldName(): String = world.name"
+                in ChameleonGenerator.generate(listOf(fns), "paper")[0].content
+        )
+        assertTrue(
+            "fun PlatPlayer.platWorldName(): String = level().dimension().location().toString()"
+                in ChameleonGenerator.generate(listOf(fns), "fabric")[0].content
+        )
+    }
+
+    @Test fun `imports used by a member body are carried through`() {
+        val withImports = SourceFile(
+            """
+            package com.example
+
+            import com.example.server.Main
+            import com.example.server.Server
+            import org.bukkit.entity.Player
+
+            @PaperOnly @Chameleon val platConfig: com.example.Config get() = Main.config
+            @FabricOnly @Chameleon val platConfig: com.example.Config get() = Server.config
+            """.trimIndent()
+        )
+
+        val paper = ChameleonGenerator.generate(listOf(withImports), "paper")[0].content
+        assertTrue("import com.example.server.Main" in paper, "the referenced import must be carried")
+        assertTrue("import com.example.server.Server" !in paper, "the unreferenced (fabric) import must be dropped")
+        assertTrue("import org.bukkit.entity.Player" !in paper, "an unused import must be dropped")
+    }
+
+    @Test fun `type alias files stay import-free`() {
+        val mixed = SourceFile(
+            """
+            package com.example
+
+            import org.bukkit.entity.Player
+
+            @PaperOnly @Chameleon val PlatPlayer: org.bukkit.entity.Player
+            """.trimIndent()
+        )
+        val paper = ChameleonGenerator.generate(listOf(mixed), "paper")[0].content
+        assertTrue("typealias PlatPlayer = org.bukkit.entity.Player" in paper)
+        assertTrue("import" !in paper, "a fully-qualified alias must not pull in an import")
+    }
 }

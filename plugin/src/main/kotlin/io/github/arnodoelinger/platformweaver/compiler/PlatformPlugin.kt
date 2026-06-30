@@ -9,16 +9,20 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
  * `Platform Weaver` compiler plugin registrar.
  *
  * Registered via `META-INF/services`; picks up the `platform` option set by the `Gradle`
- * plugin and installs [PlatformIrTransformer] when a non-blank target is configured.
+ * plugin and installs [io.github.arnodoelinger.platformweaver.compiler.PlatformIrTransformer] when a non-blank target is configured.
  */
 @OptIn(ExperimentalCompilerApi::class)
 class PlatformPlugin : CompilerPluginRegistrar() {
-    override val pluginId: String = PlatformCommandLineProcessor.PLUGIN_ID
+    override val pluginId: String = _root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PlatformCommandLineProcessor.PLUGIN_ID
     override val supportsK2: Boolean = true
 
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
-        val platform = configuration[PLATFORM_KEY]
+        val platform = configuration[_root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PLATFORM_KEY]
         if (platform.isNullOrBlank()) return
-        IrGenerationExtension.registerExtension(PlatformIrTransformer(platform))
+        IrGenerationExtension.registerExtension(
+            _root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PlatformIrTransformer(
+                platform
+            )
+        )
     }
 }

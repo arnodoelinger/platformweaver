@@ -28,11 +28,11 @@ package io.github.arnodoelinger.platformweaver
  * any Paper-specific types referenced inside a `@PaperOnly` block must still be resolvable
  * at compile time. Add `Paper API` as `compileOnly` alongside `Fabric API` in shared modules.
  *
- * @see PlatformOnly
- * @see FabricOnly
- * @see NeoForgeOnly
+ * @see io.github.arnodoelinger.platformweaver.PlatformOnly
+ * @see io.github.arnodoelinger.platformweaver.FabricOnly
+ * @see io.github.arnodoelinger.platformweaver.NeoForgeOnly
  */
-@PlatformOnly("paper")
+@io.github.arnodoelinger.platformweaver.PlatformOnly("paper")
 @Target(
     AnnotationTarget.CLASS,
     AnnotationTarget.FUNCTION,

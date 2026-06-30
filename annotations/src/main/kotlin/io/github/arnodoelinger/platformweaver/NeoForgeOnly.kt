@@ -28,11 +28,11 @@ package io.github.arnodoelinger.platformweaver
  * any `NeoForge`-specific types referenced inside a `@NeoForgeOnly` block must still be
  * resolvable at compile time. Add `NeoForge` as `compileOnly` in shared modules.
  *
- * @see PlatformOnly
- * @see FabricOnly
- * @see PaperOnly
+ * @see io.github.arnodoelinger.platformweaver.PlatformOnly
+ * @see io.github.arnodoelinger.platformweaver.FabricOnly
+ * @see io.github.arnodoelinger.platformweaver.PaperOnly
  */
-@PlatformOnly("neoforge")
+@io.github.arnodoelinger.platformweaver.PlatformOnly("neoforge")
 @Target(
     AnnotationTarget.CLASS,
     AnnotationTarget.FUNCTION,

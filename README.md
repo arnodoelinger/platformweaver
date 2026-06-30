@@ -7,7 +7,7 @@
 <div align="center">Annotate by platform, get a clean JAR per target.</div>
 
 > [!WARNING]
-> Platform Weaver is an experimental project and API can be changed in the future. You can use it, but it's not recommended.
+> Platform Weaver is an experimental project. Use it with caution.
 
 ## The situation
 

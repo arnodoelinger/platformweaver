@@ -35,11 +35,11 @@ object Scheduler {
 
 Compile for Paper? The `@FabricOnly` block is gone — it never made it to bytecode. No runtime overhead, and it's the same file for both platforms.
 
-And when the platforms differ only in a type name or an accessor, [`@Chameleon`](https://github.com/arnodoelinger/PlatformWeaver/wiki/Chameleon) merges them so the shared logic is written exactly once.
+And when the platforms differ only in a type name or an accessor, [`@Chameleon`](https://github.com/arnodoelinger/platformweaver/wiki/%C2%A73.-Chameleon) merges them so the shared logic is written exactly once.
 
 ## Install
 
-Platform Weaver is on Maven Central — no extra repository needed:
+Platform Weaver is on [Maven Central](https://central.sonatype.com/artifact/io.github.arnodoelinger/platformweaver-plugin) — no extra repository needed:
 
 ```kotlin
 // build.gradle.kts
@@ -49,7 +49,7 @@ dependencies {
 }
 ```
 
-Then point the compiler at your target platform — see [Getting Started](https://github.com/arnodoelinger/PlatformWeaver/wiki/Getting-Started) for the full setup.
+Then point the compiler at your target platform — see [Getting started](https://github.com/arnodoelinger/platformweaver/wiki/%C2%A71.-Getting-started) for the full setup.
 
 ## Documentation
 

@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 @OptIn(ExperimentalCompilerApi::class)
 class PlatformCommandLineProcessor : CommandLineProcessor {
     override val pluginId: String = PLUGIN_ID
-    override val pluginOptions: Collection<AbstractCliOption> = listOf(_root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PLATFORM_OPTION)
+    override val pluginOptions: Collection<AbstractCliOption> = listOf(PLATFORM_OPTION)
 
     /** Process the command-line option and store the platform value in the compiler configuration. */
     override fun processOption(
@@ -22,8 +22,8 @@ class PlatformCommandLineProcessor : CommandLineProcessor {
         value: String,
         configuration: CompilerConfiguration,
     ) {
-        if (option.optionName == _root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PLATFORM_OPTION.optionName) {
-            configuration.put(_root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PLATFORM_KEY, value.trim().lowercase())
+        if (option.optionName == PLATFORM_OPTION.optionName) {
+            configuration.put(PLATFORM_KEY, value.trim().lowercase())
         }
     }
 

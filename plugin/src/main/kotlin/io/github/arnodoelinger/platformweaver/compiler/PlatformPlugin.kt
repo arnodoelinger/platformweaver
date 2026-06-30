@@ -13,14 +13,14 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
  */
 @OptIn(ExperimentalCompilerApi::class)
 class PlatformPlugin : CompilerPluginRegistrar() {
-    override val pluginId: String = _root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PlatformCommandLineProcessor.PLUGIN_ID
+    override val pluginId: String = PlatformCommandLineProcessor.PLUGIN_ID
     override val supportsK2: Boolean = true
 
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
-        val platform = configuration[_root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PLATFORM_KEY]
+        val platform = configuration[PLATFORM_KEY]
         if (platform.isNullOrBlank()) return
         IrGenerationExtension.registerExtension(
-            _root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PlatformIrTransformer(
+            PlatformIrTransformer(
                 platform
             )
         )

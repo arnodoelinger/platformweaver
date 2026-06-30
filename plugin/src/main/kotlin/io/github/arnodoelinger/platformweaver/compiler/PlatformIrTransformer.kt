@@ -81,7 +81,7 @@ internal class PlatformIrTransformer(private val targetPlatform: String) : IrGen
             runCatching { meta.symbol.owner.parentAsClass }
                 .getOrNull()
                 ?.fqNameWhenAvailable
-                ?.asString() == _root_ide_package_.io.github.arnodoelinger.platformweaver.compiler.PLATFORM_ONLY_FQ_NAME
+                ?.asString() == PLATFORM_ONLY_FQ_NAME
         } ?: return false
 
         @Suppress("UNCHECKED_CAST")

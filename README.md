@@ -39,7 +39,7 @@ And when the platforms differ only in a type name or an accessor, [`@Chameleon`]
 
 ## Documentation
 
-The full guide lives in the [wiki](https://github.com/arnodoelinger/PlatformWeaver/wiki):
+The full guide lives in the [wiki](https://github.com/arnodoelinger/PlatformWeaver/wiki).
 
 ## Donate us
 

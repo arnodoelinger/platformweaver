@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     `java-library`
-    `maven-publish`
+    alias(libs.plugins.maven.publish)
 }
 
 kotlin { jvmToolchain(21) }
@@ -24,40 +24,38 @@ tasks.test {
     systemProperty("platformweaver.plugin.jar", tasks.jar.get().archiveFile.get().asFile.absolutePath)
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
+mavenPublishing {
+    publishToMavenCentral(automaticRelease = true)
+    if (providers.gradleProperty("signingInMemoryKey").isPresent) {
+        signAllPublications()
+    }
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            artifactId = "platformweaver-plugin"
-            from(components["java"])
-            pom {
-                name.set("Platform Weaver")
-                description.set(
-                    "Kotlin compiler plugin for Minecraft mod / plugin developers. Annotate by platform, get a clean JAR per target. " +
-                            "Strips platform-specific declarations from the IR tree at compile time based on meta-annotations (@FabricOnly, @PaperOnly, @NeoForgeOnly, custom). " +
-                            "Without stubs, wrappers and runtime overhead."
-                )
-                url.set("https://github.com/arnodoelinger/PlatformWeaver")
-                licenses {
-                    license {
-                        name.set("LGPL-3.0 License")
-                        url.set("https://www.gnu.org/licenses/lgpl-3.0.html")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("arnodoelinger")
-                        name.set("Arno Dölinger")
-                    }
-                }
-                scm {
-                    url.set("https://github.com/arnodoelinger/PlatformWeaver")
-                }
+    coordinates(group.toString(), "platformweaver-plugin", version.toString())
+
+    pom {
+        name.set("Platform Weaver")
+        description.set(
+            "Compiler plugin for Minecraft mod / plugin developers. Annotate by platform, get a clean JAR per target. " +
+                    "Strips platform-specific declarations from the IR tree at compile time based on meta-annotations (@FabricOnly, @PaperOnly, @NeoForgeOnly, custom). " +
+                    "Without stubs, wrappers and runtime overhead."
+        )
+        url.set("https://github.com/arnodoelinger/PlatformWeaver")
+        licenses {
+            license {
+                name.set("LGPL-3.0 License")
+                url.set("https://www.gnu.org/licenses/lgpl-3.0.html")
             }
+        }
+        developers {
+            developer {
+                id.set("arnodoelinger")
+                name.set("Arno Dölinger")
+            }
+        }
+        scm {
+            url.set("https://github.com/arnodoelinger/PlatformWeaver")
+            connection.set("scm:git:https://github.com/arnodoelinger/PlatformWeaver.git")
+            developerConnection.set("scm:git:ssh://git@github.com/arnodoelinger/PlatformWeaver.git")
         }
     }
 }

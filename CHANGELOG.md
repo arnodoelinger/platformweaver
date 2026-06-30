@@ -1,3 +1,21 @@
+# 1.2.1 Release
+
+## Highlights
+
+- The `Gradle` plugin now self-applies the compiler plugin
+- The `Gradle` plugin is now resolvable via `id("io.github.arnodoelinger.platformweaver")`
+
+## Features
+
+- `PlatformWeaverGradlePlugin` now implements `KotlinCompilerPluginSupportPlugin`, the same SPI `kotlinx-serialization`
+  and other first-party Kotlin compiler plugins use
+
+## Fixes
+
+- The `Gradle` plugin module now applies `java-gradle-plugin` and declares a proper `gradlePlugin { }` block, so the 
+  plugin marker artifact (`io.github.arnodoelinger.platformweaver:io.github.arnodoelinger.platformweaver.gradle.plugin`) is
+  actually published to Maven Central
+
 # 1.2.0 Release
 
 ## Highlights

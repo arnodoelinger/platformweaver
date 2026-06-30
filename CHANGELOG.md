@@ -1,4 +1,28 @@
-# Version 1.1.0
+# 1.2.0 Release
+
+## Highlights
+
+- New project name — Platform Weaver
+- Some minor improvements
+
+## Features
+
+- Renamed project to Platform Weaver
+- Now the author's nickname is arnodoelinger, not arsmotorin
+
+## Improvements
+
+- Updated Kotlin to 2.4.0
+- Enhanced versionizing
+- Enhanced CI process
+- New releases are now published in [Discord](https://discord.gg/J9neWMCdpR)
+
+# 1.1.0 Release
+
+## Highlights
+
+- `@Chameleon` platform-resolved type aliases
+- Gradle codegen for `@Chameleon` carriers
 
 ## Features
 
@@ -9,7 +33,7 @@
 
 - Fix dashes in changelog generation
 
-# Version 1.0.1
+# 1.0.1 Release
 
 ## Features
 
@@ -19,7 +43,7 @@
 
 - Enhance README file
 
-# Version 1.0.0
+# 1.0.0 Release
 
 ## Features
 

@@ -1,0 +1,298 @@
+name: Release
+
+# Publishing pipeline. Runs only for explicit release tags or a manual maintainer
+# dispatch. `JitPack` builds the consumable artifacts straight from the git tag, so
+# this workflow's job is to cut the GitHub release (which creates that tag) and
+# announce it.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      pull_request: false
+
+  github-prerelease:
+    name: Publish GitHub pre-release
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+
+    steps:
+      - name: No GitHub pre-release needed
+        if: needs.build.outputs.is_dev != 'true' && needs.build.outputs.is_preview != 'true'
+        run: echo "Version ${{ needs.build.outputs.version }} is not a dev or preview pre-release."
+
+      - name: Checkout repository
+        if: needs.build.outputs.is_dev == 'true' || needs.build.outputs.is_preview == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download build artifacts
+        if: needs.build.outputs.is_dev == 'true' || needs.build.outputs.is_preview == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: build-jars
+          path: build/libs
+
+      - name: Extract preview changelog
+        if: needs.build.outputs.is_preview == 'true'
+        run: |
+          python3 - <<'EOF'
+          import re
+          import sys
+
+          with open("CHANGELOG.md") as f:
+              content = f.read()
+
+          pretty_version = "${{ needs.build.outputs.pretty_version }}"
+          pattern = rf"^# {re.escape(pretty_version)}\s*\n(.*?)(?=\n# \S|\Z)"
+          match = re.search(pattern, content, re.DOTALL | re.MULTILINE)
+
+          if not match:
+              with open("changelog.md", "w") as f:
+                  f.write("")
+              sys.exit(0)
+
+          block = match.group(1)
+          sections = re.split(r"^## ", block, flags=re.MULTILINE)
+          lines = []
+
+          for section in sections:
+              if not section.strip():
+                  continue
+
+              header, _, body = section.partition("\n")
+              lines.append(f"## {header.strip()}")
+
+              for item in body.splitlines():
+                  item = item.strip()
+                  if item:
+                      lines.append(item)
+
+              lines.append("")
+
+          with open("changelog.md", "w") as f:
+              f.write("\n".join(lines).strip() + "\n")
+          EOF
+
+      - name: Publish dev pre-release
+        if: needs.build.outputs.is_dev == 'true'
+        run: |
+          TAG="v${{ needs.build.outputs.version }}"
+          gh release delete "$TAG" --repo "${{ github.repository }}" --yes 2>/dev/null || true
+          gh release create "$TAG" --repo "${{ github.repository }}" --title "${{ needs.build.outputs.pretty_version }}" --prerelease --notes "" build/libs/platformweaver-*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish preview pre-release
+        if: needs.build.outputs.is_preview == 'true'
+        run: |
+          TAG="v${{ needs.build.outputs.version }}"
+          gh release create "$TAG" --repo "${{ github.repository }}" --title "${{ needs.build.outputs.pretty_version }}" --prerelease --notes-file changelog.md build/libs/platformweaver-*.jar \
+          || gh release upload "$TAG" build/libs/platformweaver-*.jar --repo "${{ github.repository }}" --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  github-release:
+    name: Publish GitHub release
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.is_release == 'true'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-jars
+          path: build/libs
+
+      - name: Extract changelog
+        run: |
+          python3 - <<'EOF'
+          import re
+          import sys
+
+          with open("CHANGELOG.md") as f:
+              content = f.read()
+
+          version = "${{ needs.build.outputs.version }}"
+          pretty_version = "${{ needs.build.outputs.pretty_version }}"
+
+          pattern = rf"^# {re.escape(pretty_version)}\s*\n(.*?)(?=\n# \S|\Z)"
+          match = re.search(pattern, content, re.DOTALL | re.MULTILINE)
+
+          if not match:
+              sys.exit(f"Version {version} not found in CHANGELOG.md")
+
+          block = match.group(1)
+          sections = re.split(r"^## ", block, flags=re.MULTILINE)
+          lines = []
+
+          for section in sections:
+              if not section.strip():
+                  continue
+
+              header, _, body = section.partition("\n")
+              lines.append(f"## {header.strip()}")
+
+              for item in body.splitlines():
+                  item = item.strip()
+                  if item:
+                      lines.append(item)
+
+              lines.append("")
+
+          with open("changelog.md", "w") as f:
+              f.write("\n".join(lines).strip() + "\n")
+          EOF
+
+      - name: Create GitHub Release
+        run: |
+          TAG="v${{ needs.build.outputs.version }}"
+          gh release create "$TAG" --repo "${{ github.repository }}" --title "${{ needs.build.outputs.pretty_version }}" --notes-file changelog.md build/libs/platformweaver-*.jar \
+          || gh release upload "$TAG" build/libs/platformweaver-*.jar --repo "${{ github.repository }}" --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  discord-announce:
+    name: Announce release on Discord
+    runs-on: ubuntu-latest
+    needs: [build, github-prerelease, github-release]
+    if: ${{ always() && (needs.build.outputs.is_release == 'true' || needs.build.outputs.is_preview == 'true') }}
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Send Discord announcement
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          VERSION: ${{ needs.build.outputs.version }}
+          PRETTY_VERSION: ${{ needs.build.outputs.pretty_version }}
+          IS_PREVIEW: ${{ needs.build.outputs.is_preview }}
+        run: |
+          python3 - <<'EOF'
+          import json
+          import os
+          import re
+          import sys
+          import urllib.request
+
+          webhook = os.environ.get("DISCORD_WEBHOOK", "").strip()
+          if not webhook:
+              sys.exit("DISCORD_WEBHOOK secret is not set.")
+
+          version = os.environ["VERSION"]
+          pretty_version = os.environ.get("PRETTY_VERSION", version)
+          is_preview = os.environ.get("IS_PREVIEW", "") == "true"
+
+          with open("CHANGELOG.md") as f:
+              content = f.read()
+
+          pattern = rf"^# {re.escape(pretty_version)}\s*\n(.*?)(?=\n# \S|\Z)"
+          match = re.search(pattern, content, re.DOTALL | re.MULTILINE)
+          if not match:
+              sys.exit(f"Version {version} not found in CHANGELOG.md.")
+
+          block = match.group(1)
+
+          highlights = []
+          hl = re.search(r"^## Highlights\s*\n(.*?)(?=\n## |\Z)", block, re.DOTALL | re.MULTILINE)
+          if hl:
+              for line in hl.group(1).splitlines():
+                  line = line.strip()
+                  if line.startswith("- "):
+                      highlights.append(line)
+
+          if highlights:
+              highlights_text = "\n".join(highlights)
+          else:
+              highlights_text = "- See the full changelog below for all changes."
+
+          if is_preview:
+              intro = (
+                  "### Warning\n"
+                  "**This is an experimental preview and may be unstable.** "
+                  "It may contain bugs, incomplete features, or breaking changes.\n"
+              )
+          else:
+              intro = "A new version of Platform Weaver is now available!\n"
+
+          description = (
+              f"## Platform Weaver {pretty_version}\n"
+              f"{intro}"
+              "### Highlights\n"
+              f"{highlights_text}\n\n"
+              "Read the full changelog below for a complete list of changes and grab the latest version!"
+          )
+
+          repository = os.environ.get("GITHUB_REPOSITORY", "arnodoelinger/PlatformWeaver")
+
+          payload = {
+              "content": "<@&1509480327104692315>",
+              "embeds": [
+                  {
+                      "description": description,
+                      "color": 4088314,
+                      "footer": {"text": "@arnodoelinger"},
+                      "thumbnail": {"url": "https://images-ext-1.discordapp.net/external/yGzUoLg58oN02PmFB6gPnAY7Ac9jbZsxZHmGpZ3IGYo/https/i.imgur.com/ykju3hZ.png?format=webp&quality=lossless&width=896&height=896"},
+                  }
+              ],
+              "components": [
+                  {
+                      "type": 1,
+                      "components": [
+                          {
+                              "type": 2,
+                              "style": 5,
+                              "label": "View on JitPack",
+                              "url": f"https://jitpack.io/#{repository}",
+                          },
+                          {
+                              "type": 2,
+                              "style": 5,
+                              "label": "Read full changelog",
+                              "emoji": {"name": "\U0001F4DC"},
+                              "url": f"https://github.com/{repository}/releases/tag/v{version}",
+                          },
+                      ],
+                  }
+              ],
+          }
+
+          url = webhook + ("&" if "?" in webhook else "?") + "with_components=true&wait=true"
+          data = json.dumps(payload).encode("utf-8")
+          req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
+
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  print(f"Discord responded with {resp.status}")
+          except urllib.error.HTTPError as e:
+              sys.exit(f"Discord webhook failed: {e.code} {e.reason}\n{e.read().decode('utf-8', 'replace')}.")
+          EOF

@@ -1,4 +1,4 @@
-package io.github.arnodoelinger.ofrat.compiler
+package io.github.arnodoelinger.platformweaver.compiler
 
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
@@ -6,9 +6,9 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
 /**
- * `OFRAT` command-line processor.
+ * `Platform Weaver` command-line processor.
  *
- * Parses the `platform` option passed via `-P plugin:io.github.arnodoelinger.ofrat:platform=<value>`
+ * Parses the `platform` option passed via `-P plugin:io.github.arnodoelinger.platformweaver:platform=<value>`
  * and stores it in [PLATFORM_KEY] for [PlatformPlugin] to read during extension registration.
  */
 @OptIn(ExperimentalCompilerApi::class)
@@ -28,6 +28,6 @@ class PlatformCommandLineProcessor : CommandLineProcessor {
     }
 
     companion object {
-        const val PLUGIN_ID = "io.github.arnodoelinger.ofrat"
+        const val PLUGIN_ID = "io.github.arnodoelinger.platformweaver"
     }
 }

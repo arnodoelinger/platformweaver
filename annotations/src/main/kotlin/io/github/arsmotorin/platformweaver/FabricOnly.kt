@@ -1,9 +1,9 @@
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
 /**
  * Marks a declaration as `Fabric`-specific.
  *
- * When compiling for any platform other than `"fabric"`, `OFRAT` removes every declaration
+ * When compiling for any platform other than `"fabric"`, `Platform Weaver` removes every declaration
  * annotated with `@FabricOnly` from the compiler output.
  *
  * ## Usage

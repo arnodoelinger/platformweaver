@@ -1,4 +1,4 @@
-package io.github.arnodoelinger.ofrat.compiler
+package io.github.arnodoelinger.platformweaver.compiler
 
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
 /**
- * `OFRAT` compiler plugin registrar.
+ * `Platform Weaver` compiler plugin registrar.
  *
  * Registered via `META-INF/services`; picks up the `platform` option set by the `Gradle`
  * plugin and installs [PlatformIrTransformer] when a non-blank target is configured.

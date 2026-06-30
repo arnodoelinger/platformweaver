@@ -1,16 +1,16 @@
-package io.github.arnodoelinger.ofrat.gradle
+package io.github.arnodoelinger.platformweaver.gradle
 
 /**
- * `Gradle DSL` extension for the `OFRAT`.
+ * `Gradle DSL` extension for the `Platform Weaver`.
  *
  * ## Usage
  * ```kotlin
- * ofrat {
+ * platformweaver {
  *     target = "paper"    // Or "fabric", "neoforge", or any custom platform name
  * }
  * ```
  */
-abstract class OfratExtension {
+abstract class PlatformWeaverExtension {
     /**
      * The target platform for this compilation unit.
      *
@@ -24,7 +24,7 @@ abstract class OfratExtension {
      * Path (relative to the project dir) to the directory holding `@Chameleon` carrier files.
      *
      * These files declare platform-resolved type aliases and are not compiled directly. The
-     * `OFRAT` `Gradle` plugin parses them and generates a real `typealias` per [target]. Defaults to
+     * `Platform Weaver` `Gradle` plugin parses them and generates a real `typealias` per [target]. Defaults to
      * `src/main/chameleons`. Set to `null` to disable chameleon codegen entirely.
      */
     var chameleonsDir: String? = "src/main/chameleons"

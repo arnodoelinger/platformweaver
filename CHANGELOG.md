@@ -3,7 +3,7 @@
 ## Features
 
 - `@Chameleon` — platform-resolved type aliases. One name that becomes a different concrete type per platform, with no `typealias` keyword and no redeclaration clash
-- Gradle codegen for `@Chameleon` carriers (`generateChameleons` task) with configurable `ofrat { chameleonsDir = "..." }`
+- Gradle codegen for `@Chameleon` carriers (`generateChameleons` task) with configurable `platformweaver { chameleonsDir = "..." }`
 
 ## Fixes
 

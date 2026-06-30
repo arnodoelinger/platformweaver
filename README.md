@@ -1,8 +1,8 @@
-[![JitPack](https://jitpack.io/v/arnodoelinger/ofrat.svg)](https://jitpack.io/#arnodoelinger/ofrat)
-[![License](https://img.shields.io/github/license/arnodoelinger/OFRAT)](https://github.com/arnodoelinger/OFRAT/blob/master/LICENSE)
+[![JitPack](https://jitpack.io/v/arnodoelinger/platformweaver.svg)](https://jitpack.io/#arnodoelinger/platformweaver)
+[![License](https://img.shields.io/github/license/arnodoelinger/PlatformWeaver)](https://github.com/arnodoelinger/PlatformWeaver/blob/master/LICENSE)
 [![Discord](http://img.shields.io/discord/1456716690879676501?label=Discord&style=flat&logo=discord)](https://discord.gg/uwMMZ2KWk6)
 
-<div align="center"> <img src="https://i.imgur.com/6wyjMLa.png" alt="OFRAT"> </div>
+<div align="center"> <img src="https://i.imgur.com/6wyjMLa.png" alt="Platform Weaver"> </div>
 
 > [!WARNING]
 > "One file rules all targets" is an experimental project and API can be changed in the future. You can use it, but it's not recommended.
@@ -13,11 +13,11 @@ You're writing a Minecraft server plugin — and it has to run on both Fabric an
 The logic is identical. The same storage format, same commands, same packet handling, etc.
 But Fabric says `ServerLevel`, Paper says `World`. Fabric says `BlockPos`, Paper says `Location`.
 
-So you end up with two codebases that do the same thing. **OFRAT breaks that loop.**
+So you end up with two codebases that do the same thing. **Platform Weaver breaks that loop.**
 
 ## How it works
 
-Annotate declarations by platform. OFRAT's Kotlin compiler plugin removes the ones that don't belong — before a single byte is written to disk.
+Annotate declarations by platform. Platform Weaver's Kotlin compiler plugin removes the ones that don't belong — before a single byte is written to disk.
 
 ```kotlin
 object Scheduler {
@@ -59,10 +59,10 @@ dependencyResolutionManagement {
 // build.gradle.kts
 dependencies {
     // Annotation classes
-    compileOnly("com.github.arnodoelinger.ofrat:ofrat-annotations:1.0.0")
+    compileOnly("com.github.arnodoelinger.platformweaver:platformweaver-annotations:1.0.0")
 
     // Compiler plugin
-    "kotlinCompilerPluginClasspath"("com.github.arnodoelinger.ofrat:ofrat-plugin:1.0.0")
+    "kotlinCompilerPluginClasspath"("com.github.arnodoelinger.platformweaver:platformweaver-plugin:1.0.0")
 
     // Both platform APIs as compileOnly, so types inside annotated blocks resolve
     compileOnly("net.fabricmc:fabric-api:...")
@@ -76,7 +76,7 @@ dependencies {
 // build.gradle.kts
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions.freeCompilerArgs.addAll(
-        "-P", "plugin:io.github.arnodoelinger.ofrat:platform=paper"
+        "-P", "plugin:io.github.arnodoelinger.platformweaver:platform=paper"
     )
 }
 ```
@@ -84,8 +84,8 @@ tasks.withType<KotlinCompile>().configureEach {
 ### 4. Write
 
 ```kotlin
-import io.github.arnodoelinger.ofrat.FabricOnly
-import io.github.arnodoelinger.ofrat.PaperOnly
+import io.github.arnodoelinger.platformweaver.FabricOnly
+import io.github.arnodoelinger.platformweaver.PaperOnly
 
 object WorldHelper {
 
@@ -114,10 +114,10 @@ object WorldHelper {
 
 ## Custom platform annotations
 
-OFRAT isn't limited to the three built-in annotations. Define your own in one line:
+Platform Weaver isn't limited to the three built-in annotations. Define your own in one line:
 
 ```kotlin
-import io.github.arnodoelinger.ofrat.PlatformOnly
+import io.github.arnodoelinger.platformweaver.PlatformOnly
 
 @PlatformOnly("spigot")
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
@@ -130,10 +130,10 @@ It picks it up automatically. You don't need to add it to the compiler plugin cl
 ## One thing to know
 
 Two declarations with the **exact same name and parameter types** in the same class are a
-Kotlin compile error — the type-checker sees both before the IR phase where OFRAT runs.
+Kotlin compile error — the type-checker sees both before the IR phase where Platform Weaver runs.
 
 ```kotlin
-// Kotlin frontend duplicate error, OFRAT never even gets to run
+// Kotlin frontend duplicate error, Platform Weaver never even gets to run
 @FabricOnly val configDir: String = "config/mod"
 @PaperOnly  val configDir: String = "plugins/Mod"
 ```
@@ -166,9 +166,9 @@ Shared code talks to `PlatformPaths`. Each JAR ships exactly one implementation.
 
 ## What's the difference comparing to Architectury?
 
-Both OFRAT and Architectury solve the same problem, but they solve it in different ways.
+Both Platform Weaver and Architectury solve the same problem, but they solve it in different ways.
 
-|                          | Architectury            | OFRAT                       |
+|                          | Architectury            | Platform Weaver                       |
 |--------------------------|-------------------------|-----------------------------|
 | Model                    | Abstraction API         | Annotation-driven stripping |
 | Code location            | Separate source modules | Single file                 |
@@ -181,5 +181,5 @@ Both OFRAT and Architectury solve the same problem, but they solve it in differe
 
 ## Donate us
 
-OFRAT is developed with passion and dedication by me and my friends. If you enjoy our mod and want to support
+Platform Weaver is developed with passion and dedication by me and my friends. If you enjoy our mod and want to support
 further development, consider making a [donation](https://www.paypal.com/paypalme/frogdream).

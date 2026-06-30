@@ -1,14 +1,14 @@
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
-import io.github.arnodoelinger.ofrat.compiler.PLATFORM_ONLY_FQ_NAME
-import io.github.arnodoelinger.ofrat.compiler.PlatformCommandLineProcessor
-import io.github.arnodoelinger.ofrat.compiler.PlatformPlugin
+import io.github.arnodoelinger.platformweaver.compiler.PLATFORM_ONLY_FQ_NAME
+import io.github.arnodoelinger.platformweaver.compiler.PlatformCommandLineProcessor
+import io.github.arnodoelinger.platformweaver.compiler.PlatformPlugin
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @Suppress("DANGEROUS_CHARACTERS")
-class OfratPluginTest {
+class PlatformWeaverPluginTest {
 
     @Test fun `plugin id matches command line processor`() {
         assertEquals(PlatformCommandLineProcessor.PLUGIN_ID, PlatformPlugin().pluginId)

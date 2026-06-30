@@ -5,10 +5,10 @@ pluginManagement {
         maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/bootstrap")
     }
     plugins {
-        kotlin("jvm") version "2.4.0-RC"
+        kotlin("jvm") version "2.4.0"
     }
 }
 
-rootProject.name = "OFRAT"
+rootProject.name = "platformweaver"
 include(":annotations")
 include(":plugin")

@@ -1,4 +1,4 @@
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
 /**
  * Declares a platform-resolved type alias. One name that becomes a different concrete type
@@ -6,7 +6,7 @@ package io.github.arnodoelinger.ofrat
  *
  * Place `@Chameleon` on a `val` carrier together with a platform annotation
  * ([FabricOnly], [PaperOnly], [NeoForgeOnly], or any [PlatformOnly]). The carrier's name
- * becomes the alias name and its declared type becomes the alias target. `OFRAT`'s `Gradle`
+ * becomes the alias name and its declared type becomes the alias target. `Platform Weaver`'s `Gradle`
  * codegen reads these carriers and emits a real `typealias` for the active platform only, so you
  * never write the `typealias` keyword, and you never get a redeclaration clash from the variants.
  *

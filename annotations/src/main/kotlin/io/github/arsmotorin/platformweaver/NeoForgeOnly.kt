@@ -1,9 +1,9 @@
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
 /**
  * Marks a declaration as `NeoForge`-specific.
  *
- * When compiling for any platform other than `"neoforge"`, `OFRAT` removes every declaration
+ * When compiling for any platform other than `"neoforge"`, `Platform Weaver` removes every declaration
  * annotated with `@NeoForgeOnly` from the compiler output.
  *
  * ## Usage

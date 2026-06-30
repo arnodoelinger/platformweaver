@@ -6,7 +6,7 @@ plugins {
 
 kotlin { jvmToolchain(21) }
 
-base { archivesName.set("ofrat-annotations") }
+base { archivesName.set("platformweaver-annotations") }
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -20,14 +20,14 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = "ofrat-annotations"
+            artifactId = "platformweaver-annotations"
             from(components["java"])
             pom {
-                name.set("OFRAT Annotations")
+                name.set("Platform Weaver Annotations")
                 description.set(
-                    "Dependency for OFRAT plugin. @FabricOnly, @PaperOnly, @NeoForgeOnly and your own custom platform annotations."
+                    "Dependency for Platform Weaver plugin. @FabricOnly, @PaperOnly, @NeoForgeOnly and your own custom platform annotations."
                 )
-                url.set("https://github.com/arnodoelinger/OFRAT")
+                url.set("https://github.com/arnodoelinger/PlatformWeaver")
                 licenses {
                     license {
                         name.set("LGPL-3.0 License")
@@ -41,7 +41,7 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://github.com/arnodoelinger/OFRAT")
+                    url.set("https://github.com/arnodoelinger/PlatformWeaver")
                 }
             }
         }

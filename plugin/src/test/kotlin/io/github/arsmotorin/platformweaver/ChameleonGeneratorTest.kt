@@ -1,7 +1,7 @@
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
-import io.github.arnodoelinger.ofrat.gradle.ChameleonGenerator
-import io.github.arnodoelinger.ofrat.gradle.ChameleonGenerator.SourceFile
+import io.github.arnodoelinger.platformweaver.gradle.ChameleonGenerator
+import io.github.arnodoelinger.platformweaver.gradle.ChameleonGenerator.SourceFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

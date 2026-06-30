@@ -1,9 +1,9 @@
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
 /**
  * Meta-annotation that marks an annotation class as targeting a specific platform.
  *
- * `OFRAT` reads this annotation to decide which declarations
+ * `Platform Weaver` reads this annotation to decide which declarations
  * to strip at compile time. When a build targets `"paper"`, every declaration annotated
  * with an annotation whose `@PlatformOnly` [platform] value is not `"paper"` is
  * removed from the compiler output.
@@ -21,7 +21,7 @@ package io.github.arnodoelinger.ofrat
  * non-`Spigot` compilations, no changes to the plugin required.
  *
  * @param platform lowercase platform identifier (e.g. `"fabric"`, `"paper"`, `"neoforge"`).
- *   Must match the `ofrat { target = "..." }` value in the consuming module's build script.
+ *   Must match the `platformweaver { target = "..." }` value in the consuming module's build script.
  */
 @Target(AnnotationTarget.ANNOTATION_CLASS)
 @Retention(AnnotationRetention.RUNTIME)

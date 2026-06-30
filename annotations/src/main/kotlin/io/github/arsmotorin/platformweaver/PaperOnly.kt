@@ -1,9 +1,9 @@
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
 /**
  * Marks a declaration as Paper-specific (also covers `Folia`).
  *
- * When compiling for any platform other than `"paper"`, `OFRAT` removes every declaration
+ * When compiling for any platform other than `"paper"`, `Platform Weaver` removes every declaration
  * annotated with `@PaperOnly` from the compiler output.
  *
  * ## Usage

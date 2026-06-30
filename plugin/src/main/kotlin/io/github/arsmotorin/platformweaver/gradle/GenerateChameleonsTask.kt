@@ -1,4 +1,4 @@
-package io.github.arnodoelinger.ofrat.gradle
+package io.github.arnodoelinger.platformweaver.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
@@ -15,7 +15,7 @@ import java.io.File
  *
  * Reads every `.kt` file under [chameleonsDir], delegates parsing and generation to
  * [ChameleonGenerator] for the configured [platform], and writes the result into [outputDir]
- * (which the `OFRAT` Gradle plugin wires onto the Kotlin compilation's source set).
+ * (which the `Platform Weaver` Gradle plugin wires onto the Kotlin compilation's source set).
  */
 abstract class GenerateChameleonsTask : DefaultTask() {
     /** Directory holding the `@Chameleon` carrier files. Not itself a compiled source root. */

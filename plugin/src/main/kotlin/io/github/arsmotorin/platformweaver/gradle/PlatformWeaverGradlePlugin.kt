@@ -1,15 +1,15 @@
-package io.github.arnodoelinger.ofrat.gradle
+package io.github.arnodoelinger.platformweaver.gradle
 
-import io.github.arnodoelinger.ofrat.compiler.PlatformCommandLineProcessor.Companion.PLUGIN_ID
+import io.github.arnodoelinger.platformweaver.compiler.PlatformCommandLineProcessor.Companion.PLUGIN_ID
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 
 /**
- * Gradle plugin that wires `OFRAT` into any Kotlin project.
+ * Gradle plugin that wires `Platform Weaver` into any Kotlin project.
  *
- * Registers the compiler plugin and forwards the configured [OfratExtension.target] platform
+ * Registers the compiler plugin and forwards the configured [PlatformWeaverExtension.target] platform
  * as a `-P plugin:...:platform=<target>` compiler argument.
  *
  * ## Usage
@@ -17,22 +17,22 @@ import java.io.File
  * ```kotlin
  * // build.gradle.kts
  * plugins {
- *     id("io.github.arnodoelinger.ofrat")
+ *     id("io.github.arnodoelinger.platformweaver")
  * }
  *
- * ofrat {
+ * platformweaver {
  *     target = "paper"    // Or "fabric", "neoforge", or any custom string
  * }
  *
  * dependencies {
- *     compileOnly("io.github.arnodoelinger:ofrat-annotations:VERSION")
- *     "kotlinCompilerPluginClasspath"("io.github.arnodoelinger:ofrat:VERSION")
+ *     compileOnly("io.github.arnodoelinger:platformweaver-annotations:VERSION")
+ *     "kotlinCompilerPluginClasspath"("io.github.arnodoelinger:platformweaver:VERSION")
  * }
  * ```
  */
-class OfratGradlePlugin : Plugin<Project> {
+class PlatformWeaverGradlePlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val extension = project.extensions.create("ofrat", OfratExtension::class.java)
+        val extension = project.extensions.create("platformweaver", PlatformWeaverExtension::class.java)
 
         project.afterEvaluate {
             val target = extension.target?.trim()?.lowercase()
@@ -49,13 +49,13 @@ class OfratGradlePlugin : Plugin<Project> {
     }
 
     /**
-     * Wires the `@Chameleon` codegen task: parses carriers under [OfratExtension.chameleonsDir],
+     * Wires the `@Chameleon` codegen task: parses carriers under [PlatformWeaverExtension.chameleonsDir],
      * generates per-platform `typealias` files into a build directory, adds that directory to the
      * Kotlin compilation source, and makes compilation depend on the generation.
      */
-    private fun registerChameleonCodegen(project: Project, extension: OfratExtension, target: String) {
+    private fun registerChameleonCodegen(project: Project, extension: PlatformWeaverExtension, target: String) {
         val dirPath = extension.chameleonsDir?.trim() ?: return
-        val outputDir = File(project.layout.buildDirectory.get().asFile, "generated/ofrat/chameleons")
+        val outputDir = File(project.layout.buildDirectory.get().asFile, "generated/platformweaver/chameleons")
 
         val task = project.tasks.register("generateChameleons", GenerateChameleonsTask::class.java) { t ->
             t.platform.set(target)

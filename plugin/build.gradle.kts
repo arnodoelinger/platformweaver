@@ -6,7 +6,7 @@ plugins {
 
 kotlin { jvmToolchain(21) }
 
-base { archivesName.set("ofrat-plugin") }
+base { archivesName.set("platformweaver-plugin") }
 
 dependencies {
     implementation(project(":annotations"))
@@ -21,7 +21,7 @@ dependencies {
 
 tasks.test {
     dependsOn(tasks.jar)
-    systemProperty("ofrat.plugin.jar", tasks.jar.get().archiveFile.get().asFile.absolutePath)
+    systemProperty("platformweaver.plugin.jar", tasks.jar.get().archiveFile.get().asFile.absolutePath)
 }
 
 java {
@@ -32,16 +32,16 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = "ofrat-plugin"
+            artifactId = "platformweaver-plugin"
             from(components["java"])
             pom {
-                name.set("OFRAT")
+                name.set("Platform Weaver")
                 description.set(
                     "Kotlin compiler plugin for Minecraft mod / plugin developers. Annotate by platform, get a clean JAR per target. " +
                             "Strips platform-specific declarations from the IR tree at compile time based on meta-annotations (@FabricOnly, @PaperOnly, @NeoForgeOnly, custom). " +
                             "Without stubs, wrappers and runtime overhead."
                 )
-                url.set("https://github.com/arnodoelinger/OFRAT")
+                url.set("https://github.com/arnodoelinger/PlatformWeaver")
                 licenses {
                     license {
                         name.set("LGPL-3.0 License")
@@ -55,7 +55,7 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://github.com/arnodoelinger/OFRAT")
+                    url.set("https://github.com/arnodoelinger/PlatformWeaver")
                 }
             }
         }

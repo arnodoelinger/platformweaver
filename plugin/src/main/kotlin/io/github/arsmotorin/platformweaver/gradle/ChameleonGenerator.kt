@@ -1,4 +1,4 @@
-package io.github.arnodoelinger.ofrat.gradle
+package io.github.arnodoelinger.platformweaver.gradle
 
 /**
  * Codegen behind `@Chameleon`.

@@ -1,6 +1,6 @@
 @file:OptIn(org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI::class)
 
-package io.github.arnodoelinger.ofrat.compiler
+package io.github.arnodoelinger.platformweaver.compiler
 
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 
 /**
- * `OFRAT`'s core IR transformer. Strips platform-specific declarations at compile time.
+ * `Platform Weaver`'s core IR transformer. Strips platform-specific declarations at compile time.
  *
  * ## Algorithm
  *

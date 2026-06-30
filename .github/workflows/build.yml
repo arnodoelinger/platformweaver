@@ -1,4 +1,4 @@
-name: OFRAT
+name: Platform Weaver
 
 on:
   push:
@@ -108,7 +108,7 @@ jobs:
           VERSION=${{ needs.build.outputs.version }}
           TAG="v${VERSION}"
 
-          JARS=$(find artifacts -name "ofrat-*.jar" | tr '\n' ' ')
+          JARS=$(find artifacts -name "platformweaver-*.jar" | tr '\n' ' ')
 
           gh release create "$TAG" \
             --title "$VERSION" \

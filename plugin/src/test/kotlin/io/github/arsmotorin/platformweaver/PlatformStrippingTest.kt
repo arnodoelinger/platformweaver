@@ -1,6 +1,6 @@
 @file:Suppress("SameParameterValue")
 
-package io.github.arnodoelinger.ofrat
+package io.github.arnodoelinger.platformweaver
 
 import org.jetbrains.kotlin.cli.common.ExitCode
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
@@ -12,25 +12,25 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 /**
- * Integration tests that compile real Kotlin source with the `OFRAT` plugin
+ * Integration tests that compile real Kotlin source with the `Platform Weaver` plugin
  * and verify via reflection that the correct declarations are stripped.
  *
  * ## Algorithm
  * 1. Writes a Kotlin source file to a temp directory.
- * 2. Invokes [K2JVMCompiler] with `-Xplugin=<ofrat-plugin.jar>` and the target platform.
+ * 2. Invokes [K2JVMCompiler] with `-Xplugin=<platformweaver-plugin.jar>` and the target platform.
  * 3. Loads the compiled class via [URLClassLoader].
  * 4. Asserts which methods are present / absent.
  */
 class PlatformStrippingTest {
 
-    private val pluginJar: String = System.getProperty("ofrat.plugin.jar")
-        ?: error("System property 'ofrat.plugin.jar' is not set. Run tests via Gradle.")
+    private val pluginJar: String = System.getProperty("platformweaver.plugin.jar")
+        ?: error("System property 'platformweaver.plugin.jar' is not set. Run tests via Gradle.")
 
     @Test fun `FabricOnly is stripped when platform is paper`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arnodoelinger.ofrat.FabricOnly
-            import io.github.arnodoelinger.ofrat.PaperOnly
+            import io.github.arnodoelinger.platformweaver.FabricOnly
+            import io.github.arnodoelinger.platformweaver.PaperOnly
             object Target {
                 @FabricOnly fun onFabric(): String = "fabric"
                 @PaperOnly fun onPaper(): String = "paper"
@@ -47,8 +47,8 @@ class PlatformStrippingTest {
     @Test fun `PaperOnly is stripped when platform is fabric`() {
         val clazz = compile(
             platform = "fabric", source = """
-            import io.github.arnodoelinger.ofrat.FabricOnly
-            import io.github.arnodoelinger.ofrat.PaperOnly
+            import io.github.arnodoelinger.platformweaver.FabricOnly
+            import io.github.arnodoelinger.platformweaver.PaperOnly
             object Target {
                 @FabricOnly fun onFabric(): String = "fabric"
                 @PaperOnly fun onPaper(): String = "paper"
@@ -65,8 +65,8 @@ class PlatformStrippingTest {
     @Test fun `NeoForgeOnly is stripped when platform is paper`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arnodoelinger.ofrat.NeoForgeOnly
-            import io.github.arnodoelinger.ofrat.PaperOnly
+            import io.github.arnodoelinger.platformweaver.NeoForgeOnly
+            import io.github.arnodoelinger.platformweaver.PaperOnly
             object Target {
                 @NeoForgeOnly fun onNeoForge(): String = "neoforge"
                 @PaperOnly fun onPaper(): String = "paper"
@@ -98,8 +98,8 @@ class PlatformStrippingTest {
     @Test fun `FabricOnly class is stripped when platform is paper`() {
         val classFiles = compileToFiles(
             platform = "paper", source = """
-            import io.github.arnodoelinger.ofrat.FabricOnly
-            import io.github.arnodoelinger.ofrat.PaperOnly
+            import io.github.arnodoelinger.platformweaver.FabricOnly
+            import io.github.arnodoelinger.platformweaver.PaperOnly
             object Target {
                 @FabricOnly class FabricHelper
                 @PaperOnly class PaperHelper
@@ -113,8 +113,8 @@ class PlatformStrippingTest {
     @Test fun `FabricOnly property is stripped when platform is paper`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arnodoelinger.ofrat.FabricOnly
-            import io.github.arnodoelinger.ofrat.PaperOnly
+            import io.github.arnodoelinger.platformweaver.FabricOnly
+            import io.github.arnodoelinger.platformweaver.PaperOnly
             object Target {
                 @FabricOnly val fabricConfig: String = "config/mod"
                 @PaperOnly val paperConfig: String = "plugins/Mod"
@@ -129,7 +129,7 @@ class PlatformStrippingTest {
     @Test fun `custom PlatformOnly annotation is kept on its own platform`() {
         val clazz = compile(
             platform = "spigot", source = """
-            import io.github.arnodoelinger.ofrat.PlatformOnly
+            import io.github.arnodoelinger.platformweaver.PlatformOnly
             @PlatformOnly("spigot")
             @Target(AnnotationTarget.FUNCTION)
             @Retention(AnnotationRetention.SOURCE)
@@ -149,7 +149,7 @@ class PlatformStrippingTest {
     @Test fun `custom PlatformOnly annotation is stripped on a different platform`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arnodoelinger.ofrat.PlatformOnly
+            import io.github.arnodoelinger.platformweaver.PlatformOnly
             @PlatformOnly("spigot")
             @Target(AnnotationTarget.FUNCTION)
             @Retention(AnnotationRetention.SOURCE)
@@ -167,7 +167,7 @@ class PlatformStrippingTest {
     }
 
     /**
-     * Compiles [source] with the `OFRAT` plugin targeting [platform] and returns
+     * Compiles [source] with the `Platform Weaver` plugin targeting [platform] and returns
      * the loaded class named [className] from the resulting bytecode.
      */
     private fun compile(platform: String, source: String, className: String = "Target"): Class<*> {
@@ -196,7 +196,7 @@ class PlatformStrippingTest {
      * @return the output directory containing compiled class files.
      */
     private fun runCompiler(platform: String, source: String): File {
-        val tempDir = Files.createTempDirectory("ofrat-integration").toFile()
+        val tempDir = Files.createTempDirectory("platformweaver-integration").toFile()
         val sourceFile = File(tempDir, "Test.kt").also { it.writeText(source.trimIndent()) }
         val outputDir = File(tempDir, "out").also { it.mkdirs() }
 
@@ -206,7 +206,7 @@ class PlatformStrippingTest {
             "-d", outputDir.absolutePath,
             "-cp", System.getProperty("java.class.path"),
             "-Xplugin=$pluginJar",
-            "-P", "plugin:io.github.arnodoelinger.ofrat:platform=$platform",
+            "-P", "plugin:io.github.arnodoelinger.platformweaver:platform=$platform",
             "-no-stdlib",
             "-no-reflect",
         )

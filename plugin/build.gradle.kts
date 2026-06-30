@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     `java-library`
+    `java-gradle-plugin`
     alias(libs.plugins.maven.publish)
 }
 
@@ -11,7 +12,6 @@ base { archivesName.set("platformweaver-plugin") }
 dependencies {
     implementation(project(":annotations"))
     compileOnly(libs.kotlin.compiler.embeddable)
-    compileOnly(gradleApi())
     compileOnly(libs.kotlin.gradle.plugin)
 
     testImplementation(kotlin("test"))
@@ -24,7 +24,42 @@ tasks.test {
     systemProperty("platformweaver.plugin.jar", tasks.jar.get().archiveFile.get().asFile.absolutePath)
 }
 
+gradlePlugin {
+    plugins {
+        create("platformweaver") {
+            id = "io.github.arnodoelinger.platformweaver"
+            implementationClass = "io.github.arnodoelinger.platformweaver.gradle.PlatformWeaverGradlePlugin"
+            displayName = "Platform Weaver"
+            description = "Annotate by platform, get a clean JAR per target. Self-applying Kotlin compiler plugin."
+        }
+    }
+}
+
+val generateBuildConfig = tasks.register("generateBuildConfig") {
+    val outputDir = layout.buildDirectory.dir("generated/source/buildConfig/kotlin")
+    val versionValue = project.version.toString()
+    outputs.dir(outputDir)
+    doLast {
+        val file = outputDir.get().asFile.resolve("io/github/arnodoelinger/platformweaver/gradle/BuildConfig.kt")
+        file.parentFile.mkdirs()
+        file.writeText(
+            """
+            package io.github.arnodoelinger.platformweaver.gradle
+
+            internal object BuildConfig {
+                const val VERSION = "$versionValue"
+            }
+            """.trimIndent() + "\n"
+        )
+    }
+}
+
+kotlin.sourceSets.main {
+    kotlin.srcDir(generateBuildConfig)
+}
+
 mavenPublishing {
+    configure(com.vanniktech.maven.publish.GradlePlugin(javadocJar = com.vanniktech.maven.publish.JavadocJar.Empty()))
     publishToMavenCentral(automaticRelease = true)
     if (providers.gradleProperty("signingInMemoryKey").isPresent) {
         signAllPublications()

@@ -1,16 +1,24 @@
 package io.github.arnodoelinger.platformweaver.gradle
 
 import io.github.arnodoelinger.platformweaver.compiler.PlatformCommandLineProcessor.Companion.PLUGIN_ID
-import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
+import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
+import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 
 /**
  * Gradle plugin that wires `Platform Weaver` into any Kotlin project.
  *
- * Registers the compiler plugin and forwards the configured [PlatformWeaverExtension.target] platform
- * as a `-P plugin:...:platform=<target>` compiler argument.
+ * Implements [KotlinCompilerPluginSupportPlugin] — the same SPI the Kotlin Gradle plugin uses for its
+ * own first-party compiler plugins (`kotlinx-serialization`, `kotlin-parcelize`, ...). Applying
+ * `id("io.github.arnodoelinger.platformweaver")` is enough on its own: the compiler plugin jar is added
+ * to the Kotlin compilation's plugin classpath and the configured [PlatformWeaverExtension.target] is
+ * forwarded as a plugin option automatically — no manual `kotlinCompilerPluginClasspath` dependency or
+ * `freeCompilerArgs` wiring required.
  *
  * ## Usage
  *
@@ -25,48 +33,68 @@ import java.io.File
  * }
  *
  * dependencies {
+ *     // The compiler plugin itself is added automatically. The annotations stay a normal dependency:
  *     compileOnly("io.github.arnodoelinger:platformweaver-annotations:VERSION")
- *     "kotlinCompilerPluginClasspath"("io.github.arnodoelinger:platformweaver:VERSION")
  * }
  * ```
  */
-class PlatformWeaverGradlePlugin : Plugin<Project> {
-    override fun apply(project: Project) {
-        val extension = project.extensions.create("platformweaver", PlatformWeaverExtension::class.java)
+class PlatformWeaverGradlePlugin : KotlinCompilerPluginSupportPlugin {
+    /** The [PlatformWeaverExtension] instance. */
+    private lateinit var extension: PlatformWeaverExtension
 
-        project.afterEvaluate {
-            val target = extension.target?.trim()?.lowercase()
-            if (target.isNullOrBlank()) return@afterEvaluate
+    /** The plugin is applied to the root project. */
+    override fun apply(target: Project) {
+        extension = target.extensions.create("platformweaver", PlatformWeaverExtension::class.java)
+    }
 
-            project.tasks.withType(KotlinCompile::class.java).configureEach { task ->
-                task.compilerOptions.freeCompilerArgs.addAll(
-                    "-P", "plugin:$PLUGIN_ID:platform=$target"
-                )
-            }
+    /** The plugin is applied to all compilations. */
+    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean = true
 
-            registerChameleonCodegen(project, extension, target)
+    /** The compiler plugin id is used to configure the plugin option. */
+    override fun getCompilerPluginId(): String = PLUGIN_ID
+
+    /** The compiler plugin jar is added to the Kotlin compilation's plugin classpath. */
+    override fun getPluginArtifact(): SubpluginArtifact = SubpluginArtifact(
+        groupId = "io.github.arnodoelinger",
+        artifactId = "platformweaver-plugin",
+        version = BuildConfig.VERSION,
+    )
+
+    /** Applies the `@Chameleon` codegen task to the compilation. */
+    override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> {
+        val project = kotlinCompilation.target.project
+        registerChameleonCodegen(project, kotlinCompilation)
+
+        return project.provider {
+            val platformTarget = extension.target?.trim()?.lowercase()
+            if (platformTarget.isNullOrBlank()) emptyList()
+            else listOf(SubpluginOption("platform", platformTarget))
         }
     }
 
     /**
-     * Wires the `@Chameleon` codegen task: parses carriers under [PlatformWeaverExtension.chameleonsDir],
-     * generates per-platform `typealias` files into a build directory, adds that directory to the
-     * Kotlin compilation source, and makes compilation depend on the generation.
+     * Wires the `@Chameleon` codegen task for the `main` compilation: parses carriers under
+     * [PlatformWeaverExtension.chameleonsDir], generates the per-platform declarations into a build
+     * directory, and adds that directory to the compilation's Kotlin source.
      */
-    private fun registerChameleonCodegen(project: Project, extension: PlatformWeaverExtension, target: String) {
-        val dirPath = extension.chameleonsDir?.trim() ?: return
-        val outputDir = File(project.layout.buildDirectory.get().asFile, "generated/platformweaver/chameleons")
+    private fun registerChameleonCodegen(project: Project, kotlinCompilation: KotlinCompilation<*>) {
+        if (kotlinCompilation.name != "main") return
 
+        val platformTarget = extension.target?.trim()?.lowercase()
+        val dirPath = extension.chameleonsDir?.trim()
+        if (platformTarget.isNullOrBlank() || dirPath == null) return
+
+        val outputDir = File(project.layout.buildDirectory.get().asFile, "generated/platformweaver/chameleons")
         val task = project.tasks.register("generateChameleons", GenerateChameleonsTask::class.java) { t ->
-            t.platform.set(target)
+            t.platform.set(platformTarget)
             t.outputDir.set(outputDir)
             val carriersDir = project.file(dirPath)
             if (carriersDir.exists()) t.chameleonsDir.set(project.layout.projectDirectory.dir(dirPath))
         }
 
-        project.tasks.withType(KotlinCompile::class.java).configureEach { compile ->
-            compile.dependsOn(task)
-            compile.source(outputDir)
+        kotlinCompilation.compileTaskProvider.configure { compileTask ->
+            compileTask.dependsOn(task)
+            (compileTask as? KotlinCompile)?.source(outputDir)
         }
     }
 }

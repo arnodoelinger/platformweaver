@@ -1,4 +1,4 @@
-[![JitPack](https://jitpack.io/v/arnodoelinger/platformweaver.svg)](https://jitpack.io/#arnodoelinger/platformweaver)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.arnodoelinger/platformweaver-plugin?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.arnodoelinger/platformweaver-plugin)
 [![License](https://img.shields.io/github/license/arnodoelinger/PlatformWeaver)](https://github.com/arnodoelinger/PlatformWeaver/blob/master/LICENSE)
 [![Discord](http://img.shields.io/discord/1456716690879676501?label=Discord&style=flat&logo=discord)](https://discord.gg/uwMMZ2KWk6)
 
@@ -36,6 +36,20 @@ object Scheduler {
 Compile for Paper? The `@FabricOnly` block is gone — it never made it to bytecode. No runtime overhead, and it's the same file for both platforms.
 
 And when the platforms differ only in a type name or an accessor, [`@Chameleon`](https://github.com/arnodoelinger/PlatformWeaver/wiki/Chameleon) merges them so the shared logic is written exactly once.
+
+## Install
+
+Platform Weaver is on Maven Central — no extra repository needed:
+
+```kotlin
+// build.gradle.kts
+dependencies {
+    compileOnly("io.github.arnodoelinger:platformweaver-annotations:1.2.0")
+    "kotlinCompilerPluginClasspath"("io.github.arnodoelinger:platformweaver-plugin:1.2.0")
+}
+```
+
+Then point the compiler at your target platform — see [Getting Started](https://github.com/arnodoelinger/PlatformWeaver/wiki/Getting-Started) for the full setup.
 
 ## Documentation
 

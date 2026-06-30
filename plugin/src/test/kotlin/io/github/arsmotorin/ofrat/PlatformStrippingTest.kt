@@ -1,6 +1,6 @@
 @file:Suppress("SameParameterValue")
 
-package io.github.arsmotorin.ofrat
+package io.github.arnodoelinger.ofrat
 
 import org.jetbrains.kotlin.cli.common.ExitCode
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
@@ -29,8 +29,8 @@ class PlatformStrippingTest {
     @Test fun `FabricOnly is stripped when platform is paper`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arsmotorin.ofrat.FabricOnly
-            import io.github.arsmotorin.ofrat.PaperOnly
+            import io.github.arnodoelinger.ofrat.FabricOnly
+            import io.github.arnodoelinger.ofrat.PaperOnly
             object Target {
                 @FabricOnly fun onFabric(): String = "fabric"
                 @PaperOnly fun onPaper(): String = "paper"
@@ -47,8 +47,8 @@ class PlatformStrippingTest {
     @Test fun `PaperOnly is stripped when platform is fabric`() {
         val clazz = compile(
             platform = "fabric", source = """
-            import io.github.arsmotorin.ofrat.FabricOnly
-            import io.github.arsmotorin.ofrat.PaperOnly
+            import io.github.arnodoelinger.ofrat.FabricOnly
+            import io.github.arnodoelinger.ofrat.PaperOnly
             object Target {
                 @FabricOnly fun onFabric(): String = "fabric"
                 @PaperOnly fun onPaper(): String = "paper"
@@ -65,8 +65,8 @@ class PlatformStrippingTest {
     @Test fun `NeoForgeOnly is stripped when platform is paper`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arsmotorin.ofrat.NeoForgeOnly
-            import io.github.arsmotorin.ofrat.PaperOnly
+            import io.github.arnodoelinger.ofrat.NeoForgeOnly
+            import io.github.arnodoelinger.ofrat.PaperOnly
             object Target {
                 @NeoForgeOnly fun onNeoForge(): String = "neoforge"
                 @PaperOnly fun onPaper(): String = "paper"
@@ -98,8 +98,8 @@ class PlatformStrippingTest {
     @Test fun `FabricOnly class is stripped when platform is paper`() {
         val classFiles = compileToFiles(
             platform = "paper", source = """
-            import io.github.arsmotorin.ofrat.FabricOnly
-            import io.github.arsmotorin.ofrat.PaperOnly
+            import io.github.arnodoelinger.ofrat.FabricOnly
+            import io.github.arnodoelinger.ofrat.PaperOnly
             object Target {
                 @FabricOnly class FabricHelper
                 @PaperOnly class PaperHelper
@@ -113,8 +113,8 @@ class PlatformStrippingTest {
     @Test fun `FabricOnly property is stripped when platform is paper`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arsmotorin.ofrat.FabricOnly
-            import io.github.arsmotorin.ofrat.PaperOnly
+            import io.github.arnodoelinger.ofrat.FabricOnly
+            import io.github.arnodoelinger.ofrat.PaperOnly
             object Target {
                 @FabricOnly val fabricConfig: String = "config/mod"
                 @PaperOnly val paperConfig: String = "plugins/Mod"
@@ -129,7 +129,7 @@ class PlatformStrippingTest {
     @Test fun `custom PlatformOnly annotation is kept on its own platform`() {
         val clazz = compile(
             platform = "spigot", source = """
-            import io.github.arsmotorin.ofrat.PlatformOnly
+            import io.github.arnodoelinger.ofrat.PlatformOnly
             @PlatformOnly("spigot")
             @Target(AnnotationTarget.FUNCTION)
             @Retention(AnnotationRetention.SOURCE)
@@ -149,7 +149,7 @@ class PlatformStrippingTest {
     @Test fun `custom PlatformOnly annotation is stripped on a different platform`() {
         val clazz = compile(
             platform = "paper", source = """
-            import io.github.arsmotorin.ofrat.PlatformOnly
+            import io.github.arnodoelinger.ofrat.PlatformOnly
             @PlatformOnly("spigot")
             @Target(AnnotationTarget.FUNCTION)
             @Retention(AnnotationRetention.SOURCE)
@@ -206,7 +206,7 @@ class PlatformStrippingTest {
             "-d", outputDir.absolutePath,
             "-cp", System.getProperty("java.class.path"),
             "-Xplugin=$pluginJar",
-            "-P", "plugin:io.github.arsmotorin.ofrat:platform=$platform",
+            "-P", "plugin:io.github.arnodoelinger.ofrat:platform=$platform",
             "-no-stdlib",
             "-no-reflect",
         )

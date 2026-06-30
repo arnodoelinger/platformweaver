@@ -41,7 +41,7 @@ publishing {
                             "Strips platform-specific declarations from the IR tree at compile time based on meta-annotations (@FabricOnly, @PaperOnly, @NeoForgeOnly, custom). " +
                             "Without stubs, wrappers and runtime overhead."
                 )
-                url.set("https://github.com/arsmotorin/OFRAT")
+                url.set("https://github.com/arnodoelinger/OFRAT")
                 licenses {
                     license {
                         name.set("LGPL-3.0 License")
@@ -50,12 +50,12 @@ publishing {
                 }
                 developers {
                     developer {
-                        id.set("arsmotorin")
-                        name.set("Arsenii Motorin")
+                        id.set("arnodoelinger")
+                        name.set("Arno Dölinger")
                     }
                 }
                 scm {
-                    url.set("https://github.com/arsmotorin/OFRAT")
+                    url.set("https://github.com/arnodoelinger/OFRAT")
                 }
             }
         }

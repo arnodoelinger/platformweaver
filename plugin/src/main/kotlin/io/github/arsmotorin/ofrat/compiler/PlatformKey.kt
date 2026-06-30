@@ -1,4 +1,4 @@
-package io.github.arsmotorin.ofrat.compiler
+package io.github.arnodoelinger.ofrat.compiler
 
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
@@ -10,7 +10,7 @@ internal val PLATFORM_KEY = CompilerConfigurationKey.create<String>("ofrat.platf
 /**
  * CLI option accepted by [PlatformCommandLineProcessor].
  *
- * Passed via `-P plugin:io.github.arsmotorin.ofrat:platform=<value>`.
+ * Passed via `-P plugin:io.github.arnodoelinger.ofrat:platform=<value>`.
  */
 internal val PLATFORM_OPTION: AbstractCliOption = CliOption(
     optionName = "platform",
@@ -20,5 +20,5 @@ internal val PLATFORM_OPTION: AbstractCliOption = CliOption(
     allowMultipleOccurrences = false,
 )
 
-/** Fully-qualified name of [io.github.arsmotorin.ofrat.PlatformOnly], used for IR lookup. */
-internal const val PLATFORM_ONLY_FQ_NAME = "io.github.arsmotorin.ofrat.PlatformOnly"
+/** Fully-qualified name of [io.github.arnodoelinger.ofrat.PlatformOnly], used for IR lookup. */
+internal const val PLATFORM_ONLY_FQ_NAME = "io.github.arnodoelinger.ofrat.PlatformOnly"

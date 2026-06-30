@@ -1,8 +1,8 @@
-package io.github.arsmotorin.ofrat
+package io.github.arnodoelinger.ofrat
 
-import io.github.arsmotorin.ofrat.compiler.PLATFORM_ONLY_FQ_NAME
-import io.github.arsmotorin.ofrat.compiler.PlatformCommandLineProcessor
-import io.github.arsmotorin.ofrat.compiler.PlatformPlugin
+import io.github.arnodoelinger.ofrat.compiler.PLATFORM_ONLY_FQ_NAME
+import io.github.arnodoelinger.ofrat.compiler.PlatformCommandLineProcessor
+import io.github.arnodoelinger.ofrat.compiler.PlatformPlugin
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

@@ -1,6 +1,6 @@
-package io.github.arsmotorin.ofrat.gradle
+package io.github.arnodoelinger.ofrat.gradle
 
-import io.github.arsmotorin.ofrat.compiler.PlatformCommandLineProcessor.Companion.PLUGIN_ID
+import io.github.arnodoelinger.ofrat.compiler.PlatformCommandLineProcessor.Companion.PLUGIN_ID
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -17,7 +17,7 @@ import java.io.File
  * ```kotlin
  * // build.gradle.kts
  * plugins {
- *     id("io.github.arsmotorin.ofrat")
+ *     id("io.github.arnodoelinger.ofrat")
  * }
  *
  * ofrat {
@@ -25,8 +25,8 @@ import java.io.File
  * }
  *
  * dependencies {
- *     compileOnly("io.github.arsmotorin:ofrat-annotations:VERSION")
- *     "kotlinCompilerPluginClasspath"("io.github.arsmotorin:ofrat:VERSION")
+ *     compileOnly("io.github.arnodoelinger:ofrat-annotations:VERSION")
+ *     "kotlinCompilerPluginClasspath"("io.github.arnodoelinger:ofrat:VERSION")
  * }
  * ```
  */

@@ -1,4 +1,4 @@
-package io.github.arsmotorin.ofrat.gradle
+package io.github.arnodoelinger.ofrat.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty

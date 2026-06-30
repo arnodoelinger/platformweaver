@@ -1,4 +1,4 @@
-package io.github.arsmotorin.ofrat.gradle
+package io.github.arnodoelinger.ofrat.gradle
 
 /**
  * `Gradle DSL` extension for the `OFRAT`.

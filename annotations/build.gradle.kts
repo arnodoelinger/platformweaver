@@ -27,7 +27,7 @@ publishing {
                 description.set(
                     "Dependency for OFRAT plugin. @FabricOnly, @PaperOnly, @NeoForgeOnly and your own custom platform annotations."
                 )
-                url.set("https://github.com/arsmotorin/OFRAT")
+                url.set("https://github.com/arnodoelinger/OFRAT")
                 licenses {
                     license {
                         name.set("LGPL-3.0 License")
@@ -36,12 +36,12 @@ publishing {
                 }
                 developers {
                     developer {
-                        id.set("arsmotorin")
-                        name.set("Arsenii Motorin")
+                        id.set("arnodoelinger")
+                        name.set("Arno Dölinger")
                     }
                 }
                 scm {
-                    url.set("https://github.com/arsmotorin/OFRAT")
+                    url.set("https://github.com/arnodoelinger/OFRAT")
                 }
             }
         }

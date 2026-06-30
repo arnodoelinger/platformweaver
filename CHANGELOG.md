@@ -13,7 +13,7 @@
 
 ## Features
 
-- Use the same changelog style as in [Dream Displays](https://github.com/arsmotorin/dreamdisplays/blob/main/CHANGELOG.md)
+- Use the same changelog style as in [Dream Displays](https://github.com/arnodoelinger/dreamdisplays/blob/main/CHANGELOG.md)
 
 ## Improvements
 

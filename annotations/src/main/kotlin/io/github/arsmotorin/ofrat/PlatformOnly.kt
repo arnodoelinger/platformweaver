@@ -1,4 +1,4 @@
-package io.github.arsmotorin.ofrat
+package io.github.arnodoelinger.ofrat
 
 /**
  * Meta-annotation that marks an annotation class as targeting a specific platform.

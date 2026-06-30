@@ -1,4 +1,4 @@
-package io.github.arsmotorin.ofrat
+package io.github.arnodoelinger.ofrat
 
 /**
  * Declares a platform-resolved type alias. One name that becomes a different concrete type

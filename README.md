@@ -1,5 +1,5 @@
-[![JitPack](https://jitpack.io/v/arsmotorin/ofrat.svg)](https://jitpack.io/#arsmotorin/ofrat)
-[![License](https://img.shields.io/github/license/arsmotorin/OFRAT)](https://github.com/arsmotorin/OFRAT/blob/master/LICENSE)
+[![JitPack](https://jitpack.io/v/arnodoelinger/ofrat.svg)](https://jitpack.io/#arnodoelinger/ofrat)
+[![License](https://img.shields.io/github/license/arnodoelinger/OFRAT)](https://github.com/arnodoelinger/OFRAT/blob/master/LICENSE)
 [![Discord](http://img.shields.io/discord/1456716690879676501?label=Discord&style=flat&logo=discord)](https://discord.gg/uwMMZ2KWk6)
 
 <div align="center"> <img src="https://i.imgur.com/6wyjMLa.png" alt="OFRAT"> </div>
@@ -59,10 +59,10 @@ dependencyResolutionManagement {
 // build.gradle.kts
 dependencies {
     // Annotation classes
-    compileOnly("com.github.arsmotorin.ofrat:ofrat-annotations:1.0.0")
+    compileOnly("com.github.arnodoelinger.ofrat:ofrat-annotations:1.0.0")
 
     // Compiler plugin
-    "kotlinCompilerPluginClasspath"("com.github.arsmotorin.ofrat:ofrat-plugin:1.0.0")
+    "kotlinCompilerPluginClasspath"("com.github.arnodoelinger.ofrat:ofrat-plugin:1.0.0")
 
     // Both platform APIs as compileOnly, so types inside annotated blocks resolve
     compileOnly("net.fabricmc:fabric-api:...")
@@ -76,7 +76,7 @@ dependencies {
 // build.gradle.kts
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions.freeCompilerArgs.addAll(
-        "-P", "plugin:io.github.arsmotorin.ofrat:platform=paper"
+        "-P", "plugin:io.github.arnodoelinger.ofrat:platform=paper"
     )
 }
 ```
@@ -84,8 +84,8 @@ tasks.withType<KotlinCompile>().configureEach {
 ### 4. Write
 
 ```kotlin
-import io.github.arsmotorin.ofrat.FabricOnly
-import io.github.arsmotorin.ofrat.PaperOnly
+import io.github.arnodoelinger.ofrat.FabricOnly
+import io.github.arnodoelinger.ofrat.PaperOnly
 
 object WorldHelper {
 
@@ -117,7 +117,7 @@ object WorldHelper {
 OFRAT isn't limited to the three built-in annotations. Define your own in one line:
 
 ```kotlin
-import io.github.arsmotorin.ofrat.PlatformOnly
+import io.github.arnodoelinger.ofrat.PlatformOnly
 
 @PlatformOnly("spigot")
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)

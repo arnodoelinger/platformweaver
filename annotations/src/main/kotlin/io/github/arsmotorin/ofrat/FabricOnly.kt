@@ -1,4 +1,4 @@
-package io.github.arsmotorin.ofrat
+package io.github.arnodoelinger.ofrat
 
 /**
  * Marks a declaration as `Fabric`-specific.

@@ -1,7 +1,7 @@
-package io.github.arsmotorin.ofrat
+package io.github.arnodoelinger.ofrat
 
-import io.github.arsmotorin.ofrat.gradle.ChameleonGenerator
-import io.github.arsmotorin.ofrat.gradle.ChameleonGenerator.SourceFile
+import io.github.arnodoelinger.ofrat.gradle.ChameleonGenerator
+import io.github.arnodoelinger.ofrat.gradle.ChameleonGenerator.SourceFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
